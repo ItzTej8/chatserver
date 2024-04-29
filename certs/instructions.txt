@@ -1,5 +1,7 @@
-# Generate a private key
-openssl genpkey -algorithm RSA -out key.pem -pkeyopt rsa_keygen_bits:4096
+Generate a CA Certificate (Self-Signed):
+openssl req -new -x509 -days 365 -keyout ca-key.pem -out ca-cert.pem
 
-# Generate a self-signed certificate
-openssl req -new -key key.pem -out cert.pem -x509 -days 365
+
+Generate a Server Certificate Signed by the CA:
+openssl req -new -nodes -days 365 -keyout server-key.pem -out server-req.pem
+openssl x509 -req -in server-req.pem -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -days 365

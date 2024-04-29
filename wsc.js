@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 
 // WebSocket server URL
-const serverUrl = 'ws://localhost:8080/websocket';
+const serverUrl = 'wss://localhost:8080/websocket';
 
 // Create a WebSocket instance
 const socket = new WebSocket(serverUrl);

@@ -1,26 +1,28 @@
-import WebSocket, { WebSocketServer } from 'ws';
-// import { createServer } from 'https';
+
 import { createSecureServer } from 'http2';
 import { readFileSync } from 'fs';
-import { WebSocketServer } from 'ws';
-
-// const server = createServer({
-//   cert: readFileSync('/path/to/cert.pem'),
-//   key: readFileSync('/path/to/key.pem')
-// });
+import WebSocket, { WebSocketServer } from 'ws';
 
 const server = createSecureServer({
-  cert: readFileSync('/certs/cert.pem'),
-  key: readFileSync('/certs/key.pem'),
+  cert: readFileSync('certs/cert.pem'),
+  key: readFileSync('certs/key.pem'),
   allowHTTP1: true // Enable HTTP/1 support
 });
 
-
 const wss = new WebSocketServer({
   server,
+  path: '/websocket',
+  backlog: 511,
+  noServer: false,
+  clientTracking: true,
+  maxPayload: 1024 * 1024, // 1MB
+  verifyClient: (info, callback) => {
+    // Your validation logic here
+    const isValid = true; // Example validation always returning true
+    callback(isValid);
+  },
   perMessageDeflate: {
     zlibDeflateOptions: {
-      // See zlib defaults.
       chunkSize: 1024,
       memLevel: 7,
       level: 3
@@ -28,29 +30,26 @@ const wss = new WebSocketServer({
     zlibInflateOptions: {
       chunkSize: 10 * 1024
     },
-    // Other options settable:
-    clientNoContextTakeover: true, // Defaults to negotiated value.
-    serverNoContextTakeover: true, // Defaults to negotiated value.
-    serverMaxWindowBits: 10, // Defaults to negotiated value.
-    // Below options specified as default values.
-    concurrencyLimit: 10, // Limits zlib concurrency for perf.
-    threshold: 1024 // Size (in bytes) below which messages
-    // should not be compressed if context takeover is disabled.
+    clientNoContextTakeover: true,
+    serverNoContextTakeover: true,
+    serverMaxWindowBits: 10,
+    concurrencyLimit: 10,
+    threshold: 1024
   }
 });
 
-
-
-
-
 wss.on('connection', function connection(ws) {
-    ws.on('error', console.error);
-  
-    ws.on('message', function message(data) {
-      console.log('received: %s', data);
-    });
-  
-    ws.send('something');
+  ws.on('error', function(error) {
+    console.error('WebSocket error:', error);
+  });
+
+  ws.on('message', function(message) {
+    console.log('Received message:', message);
+  });
+
+  ws.send('something');
 });
 
-
+server.listen(8080, () => {
+  console.log('WebSocket server is running on port 8080');
+});

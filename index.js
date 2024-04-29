@@ -1,13 +1,15 @@
-
+import { createServer } from 'http';
 import { createSecureServer } from 'http2';
 import { readFileSync } from 'fs';
 import WebSocket, { WebSocketServer } from 'ws';
 
-const server = createSecureServer({
-  cert: readFileSync('certs/cert.pem'),
-  key: readFileSync('certs/key.pem'),
-  allowHTTP1: true // Enable HTTP/1 support
-});
+// const server = createSecureServer({
+//   cert: readFileSync('certs/cert.pem'),
+//   key: readFileSync('certs/key.pem'),
+//   allowHTTP1: true // Enable HTTP/1 support
+// });
+
+const server = createServer();
 
 const wss = new WebSocketServer({
   server,

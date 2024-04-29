@@ -1,23 +1,30 @@
-import WebSocket from 'uWebSockets.js';
+import WebSocket from 'ws';
 
-const ws = new WebSocket('ws://localhost:9001');
+// WebSocket server URL
+const serverUrl = 'ws://localhost:8080/websocket';
 
-ws.on('open', () => {
-  console.log('Connected to WebSocket server');
+// Create a WebSocket instance
+const socket = new WebSocket(serverUrl);
+
+// Event listener for successful connection
+socket.addEventListener('open', () => {
+  console.log('Connected to the WebSocket server');
 
   // Send a message to the server
-  ws.send('Hello, WebSocket server!');
+  socket.send('Hello from client!');
 });
 
-ws.on('message', (message) => {
-  console.log('Received message from server:', message);
+// Event listener for incoming messages
+socket.addEventListener('message', (event) => {
+  console.log('Received message from server:', event.data);
 });
 
-ws.on('close', () => {
-  console.log('Disconnected from WebSocket server');
+// Event listener for errors
+socket.addEventListener('error', (error) => {
+  console.error('WebSocket error:', error);
 });
 
-// Handle errors
-ws.on('error', (error) => {
-  console.error('WebSocket encountered error:', error);
+// Event listener for connection closure
+socket.addEventListener('close', (event) => {
+  console.log('WebSocket connection closed:', event);
 });

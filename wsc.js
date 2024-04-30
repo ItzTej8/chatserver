@@ -1,30 +1,37 @@
 import WebSocket from 'ws';
+import fs from 'fs';
 
-// WebSocket server URL
-const serverUrl = 'wss://localhost:8080/websocket';
+const caCert = fs.readFileSync('certs/cert.pem'); // Load CA certificate
 
-// Create a WebSocket instance
-const socket = new WebSocket(serverUrl);
+const socket = new WebSocket('wss://localhost:8080/websocket', {
+    ca: caCert,
+   // rejectUnauthorized: true
+});
 
-// Event listener for successful connection
+socket.onopen = () => {
+    console.log('Connected to WebSocket server');
+    socket.send('Hello Server!');
+}; 
+
 socket.addEventListener('open', () => {
-  console.log('Connected to the WebSocket server');
+  console.log('WebSocket connected');
 
-  // Send a message to the server
-  socket.send('Hello from client!');
+  // Send a ping message every 1 minute (60 seconds)
+  const pingInterval = setInterval(() => {
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.ping();
+      
+    } else {
+      clearInterval(pingInterval); // Stop sending pings if WebSocket is closed or not open
+    }
+  }, 60000); // 60 seconds in milliseconds
+
+  // Handle pong messages (optional)
+  socket.addEventListener('pong', () => {
+    console.log('Received pong from server');
+  });
 });
 
-// Event listener for incoming messages
-socket.addEventListener('message', (event) => {
-  console.log('Received message from server:', event.data);
-});
-
-// Event listener for errors
-socket.addEventListener('error', (error) => {
-  console.error('WebSocket error:', error);
-});
-
-// Event listener for connection closure
-socket.addEventListener('close', (event) => {
-  console.log('WebSocket connection closed:', event);
-});
+socket.onmessage = (event) => {
+    console.log(`Received: ${event.data}`);
+};

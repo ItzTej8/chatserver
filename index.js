@@ -3,11 +3,36 @@ import { createSecureServer } from 'http2';
 import { readFileSync } from 'fs';
 import WebSocket, { WebSocketServer } from 'ws';
 
-const server = createSecureServer({
-  cert: readFileSync('certs/cert.pem'),
-  key: readFileSync('certs/key.pem'),
-  allowHTTP1: true // Enable HTTP/1 support
-});
+
+// Load the certificate, key, and CA files
+const key = readFileSync('certs/key.pem');
+const cert = readFileSync('certs/cert.pem');
+const ca = readFileSync('certs/cert.pem');
+
+// Create credentials object with passphrase via HTTP2
+const credentials = {
+    key: key,
+    cert: cert,
+    ca: ca,
+    allowHTTP1: true,
+    passphrase: 'Tej8'
+
+};
+
+// Create credentials object with passphrase via HTTP1
+const credentials2 = {
+  key: key,
+  cert: cert,
+  ca: ca,
+  passphrase: 'Tej8'
+};
+
+
+const server = createSecureServer(credentials);
+
+// Create HTTPS server with credentials
+//const server = https.createServer(credentials);
+
 
 // const server = createServer();
 
@@ -51,6 +76,8 @@ wss.on('connection', function connection(ws) {
 
   ws.send('something');
 });
+
+
 
 server.listen(8080, () => {
   console.log('WebSocket server is running on port 8080');

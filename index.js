@@ -70,7 +70,20 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.on('message', function(message) {
-    console.log('Received message:', message);
+    //console.log('Received message:', message);
+    try {
+      const binaryData = Buffer.from(message);
+      // Assuming the binary data represents JSON
+      const jsonData = JSON.parse(binaryData.toString());
+
+      // Process the JSON data
+      console.log('Received JSON:', jsonData);
+
+      // You can send back a response if needed
+      // ws.send(JSON.stringify({ response: 'Received your JSON data' }));
+    } catch (error) {
+      //console.error('Error parsing JSON:', error.message);
+    }
   });
 
   ws.send('something');

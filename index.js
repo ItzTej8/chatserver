@@ -73,13 +73,20 @@ wss.on('connection', function connection(ws) {
     //console.log('Received message:', message);
     try {
       const binaryData = Buffer.from(message);
-      // Assuming the binary data represents JSON
-      const jsonData = JSON.parse(binaryData.toString());
+      const data = JSON.parse(binaryData.toString());
+      console.log('Received JSON:', data);
 
-      // Process the JSON data
-      console.log('Received JSON:', jsonData);
-
-      // You can send back a response if needed
+      switch (data.handler) {
+        case 'chat':
+          handleChatMessage(ws, data);
+          break;
+        case 'status':
+          handleStatusUpdate(ws, data);
+          break;
+        default:
+          console.log('Unknown message type:', data.type);
+      }
+      
       // ws.send(JSON.stringify({ response: 'Received your JSON data' }));
     } catch (error) {
       //console.error('Error parsing JSON:', error.message);

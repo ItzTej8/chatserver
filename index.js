@@ -16,7 +16,6 @@ const credentials = {
     ca: ca,
     allowHTTP1: true,
     passphrase: 'Tej8'
-
 };
 
 // Create credentials object with passphrase via HTTP1

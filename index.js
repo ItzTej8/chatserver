@@ -3,6 +3,12 @@ import { createSecureServer } from 'http2';
 import { readFileSync } from 'fs';
 import WebSocket, { WebSocketServer } from 'ws';
 
+import cors  from 'cors';
+
+const corsOptions = {
+    origin: 'https://localhost:8080',
+    optionsSuccessStatus: 200
+};
 
 // Load the certificate, key, and CA files
 const key = readFileSync('certs/key.pem');

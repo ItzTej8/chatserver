@@ -77,8 +77,10 @@ const dt = [
   ]
   
   const assignTrueCount = dt.filter(item => item.assign === true).length;
+  const percentage = ((assignTrueCount / dt.length) * 100).toFixed(2);
 
-  console.log(assignTrueCount); 
+  console.log(assignTrueCount); // Count of objects where assign is true
+  console.log(percentage);
 
 
 //proceedIHRequest().then(checkifget());

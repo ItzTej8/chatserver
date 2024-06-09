@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.19.2",
+    "jsdom": "^24.1.0",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.43.0",
     "ws": "^8.17.0"
   }

@@ -23,10 +23,65 @@ const todayDate = getCurrentDateFormatted();
 console.log(todayDate)
 
 
+const dt = [
+    { callId: '4394585696', assign: false, pda: true, rc: true },
+    { callId: '4394586303', assign: false, pda: true, rc: false },
+    { callId: '4394586424', assign: false, pda: true, rc: true },
+    { callId: '4394588111', assign: true, pda: true, rc: false },
+    { callId: '4394588492', assign: true, pda: true, rc: true },
+    { callId: '4394588533', assign: true, pda: true, rc: false },
+    { callId: '4394588836', assign: true, pda: true, rc: false },
+    { callId: '4394589557', assign: false, pda: true, rc: false },
+    { callId: '4394590329', assign: true, pda: true, rc: true },
+    { callId: '4394591237', assign: true, pda: false, rc: false },
+    { callId: '4394591510', assign: true, pda: false, rc: true },
+    { callId: '4394592542', assign: true, pda: true, rc: true },
+    { callId: '4394593566', assign: true, pda: true, rc: false },
+    { callId: '4394593770', assign: true, pda: true, rc: false },
+    { callId: '4394594071', assign: true, pda: true, rc: false },
+    { callId: '4394594522', assign: true, pda: true, rc: false },
+    { callId: '4394595371', assign: true, pda: true, rc: true },
+    { callId: '4394595803', assign: true, pda: true, rc: false },
+    { callId: '4394595971', assign: true, pda: true, rc: true },
+    { callId: '4394596549', assign: true, pda: false, rc: true },
+    { callId: '4394596836', assign: true, pda: false, rc: true },
+    { callId: '4394597887', assign: true, pda: true, rc: false },
+    { callId: '4394598786', assign: true, pda: false, rc: false },
+    { callId: '4394599376', assign: true, pda: true, rc: false },
+    { callId: '4394600270', assign: true, pda: true, rc: false },
+    { callId: '4394601552', assign: true, pda: true, rc: true },
+    { callId: '4394602754', assign: true, pda: true, rc: true },
+    { callId: '4394602886', assign: true, pda: true, rc: false },
+    { callId: '4394604518', assign: true, pda: true, rc: false },
+    { callId: '4394605692', assign: true, pda: true, rc: false },
+    { callId: '4394607057', assign: true, pda: true, rc: false },
+    { callId: '4394607997', assign: true, pda: true, rc: false },
+    { callId: '4394608182', assign: true, pda: false, rc: false },
+    { callId: '4394609631', assign: true, pda: false, rc: false },
+    { callId: '4394609892', assign: true, pda: true, rc: false },
+    { callId: '4394610389', assign: true, pda: true, rc: true },
+    { callId: '4394610805', assign: true, pda: false, rc: false },
+    { callId: '4394611380', assign: true, pda: true, rc: true },
+    { callId: '4394613465', assign: true, pda: false, rc: false },
+    { callId: '4394614814', assign: true, pda: false, rc: false },
+    { callId: '4394616443', assign: true, pda: false, rc: false },
+    { callId: '4394618053', assign: true, pda: false, rc: false },
+    { callId: '4394618067', assign: true, pda: false, rc: false },
+    { callId: '4394618882', assign: true, pda: false, rc: false },
+    { callId: '4394619715', assign: true, pda: true, rc: false },
+    { callId: '4394621101', assign: false, pda: false, rc: false },
+    { callId: '4394622191', assign: false, pda: false, rc: false },
+    { callId: '4394622459', assign: false, pda: false, rc: false },
+    { callId: '4394623414', assign: false, pda: false, rc: false },
+    { callId: '4394624008', assign: false, pda: false, rc: false }
+  ]
+  
+  const assignTrueCount = dt.filter(item => item.assign === true).length;
+
+  console.log(assignTrueCount); 
 
 
-
-proceedIHRequest().then(checkifget());
+//proceedIHRequest().then(checkifget());
 
 
 

@@ -82,6 +82,17 @@ const dt = [
   console.log(assignTrueCount); // Count of objects where assign is true
   console.log(percentage);
 
+const pdaTrueCount = dt.filter(item => item.pda === true).length;
+  const percentage2 = ((pdaTrueCount / dt.length) * 100).toFixed(2);
+
+  console.log(pdaTrueCount); // Count of objects where assign is true
+  console.log(percentage2);
+
+const rcTrueCount = dt.filter(item => item.rc === true).length;
+  const percentage3 = ((rcTrueCount / dt.length) * 100).toFixed(2);
+
+  console.log(rcTrueCount); // Count of objects where assign is true
+  console.log(percentage3);
 
 //proceedIHRequest().then(checkifget());
 

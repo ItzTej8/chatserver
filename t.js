@@ -1,8 +1,8 @@
 import { JSDOM } from 'jsdom';
+import Excel from 'exceljs';
 
 
-
-var cookie = "WMONID=M_oaIxU__Bt; dtPC=-; ASOBGSPNSESSIONID=9C7-sftUaDUM9xQj_pWmUvyNkJMvLSNXAyIwIcT1VIXa8GShfon-!-348183271!-1219551079";
+var cookie = "WMONID=V68A7zXvK4n; visid_incap_2651221=SZt5skd1SIy+gYroiVUG4p7A6WUAAAAAQUIPAAAAAAAJ31JCh/zEsdvYJ+2K1ZXE; ASOBGSPNSESSIONID=WtUCN6lolpcY_wz8eXfr0HS4N0gGsqaHcmd3Jgl2nUu5aycBad4s!-1219551079!818921347; dtPC=-";
 var ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
 var isRequestCompleted = false;
 let IHFetchedCalls = [];
@@ -82,8 +82,21 @@ const dt = [
   console.log(assignTrueCount); // Count of objects where assign is true
   console.log(percentage);
 
+const pdaTrueCount = dt.filter(item => item.pda === true).length;
+  const percentage2 = ((pdaTrueCount / dt.length) * 100).toFixed(2);
 
-//proceedIHRequest().then(checkifget());
+  console.log(pdaTrueCount); // Count of objects where assign is true
+  console.log(percentage2);
+
+const rcTrueCount = dt.filter(item => item.rc === true).length;
+  const percentage3 = ((rcTrueCount / dt.length) * 100).toFixed(2);
+
+  console.log(rcTrueCount); // Count of objects where assign is true
+  console.log(percentage3);
+
+
+
+proceedIHRequest().then(checkifget());
 
 
 
@@ -217,7 +230,6 @@ async function preRequestIH(){
     //console.log(error)
 }
 }
-
 async function postRequestIH()
 {
 //console.log("postRequestIH")
@@ -376,7 +388,7 @@ await sleep(5000);
 async function get_ASCAssigned(res)
 {
 
-    const dom = new JSDOM(res);
+const dom = new JSDOM(res);
 const document = dom.window.document;
 
 const rows = document.querySelectorAll("table tr");
@@ -522,7 +534,8 @@ let rc = await isRc(data.rc);
   }
   }
 
-  console.log(myData)
+  console.log(myData);
+  await generateExcel();
 
 
 }
@@ -552,4 +565,144 @@ return true;
     return false;
   }
 
+}
+
+
+async function generateExcel2() {
+  const workbook = new Excel.Workbook();
+  const sheet = workbook.addWorksheet('Sheet1');
+
+  var rcPercentage ;
+  var assignFalseCount ;
+  var assignPercentage ;
+  
+  var pdaTrueCount ;
+  var pdaFalseCount ;
+  var pdaPercentage ;
+  
+  var rcTrueCount ;
+  var rcFalseCount ;
+  var rcPercentage ;
+  
+  assignTrueCount = myData.filter(item => item.assign === true).length;
+  assignFalseCount = myData.filter(item => item.assign === false).length;
+    assignPercentage = ((assignTrueCount / myData.length) * 100).toFixed(2);
+  
+    console.log(assignTrueCount, assignFalseCount); // Count of objects where assign is true
+    console.log(assignPercentage);
+  
+  pdaTrueCount = myData.filter(item => item.pda === true).length;
+  pdaFalseCount = myData.filter(item => item.pda === false).length;
+    pdaPercentage = ((pdaTrueCount / myData.length) * 100).toFixed(2);
+  
+    console.log(pdaTrueCount, pdaFalseCount); // Count of objects where assign is true
+    console.log(pdaPercentage );
+  
+  
+  rcTrueCount = myData.filter(item => item.rc === true).length;
+  rcFalseCount = myData.filter(item => item.rc === false).length;
+    rcPercentage = ((rcTrueCount / myData.length) * 100).toFixed(2);
+  
+    console.log(rcTrueCount, rcFalseCount ); // Count of objects where assign is true
+    console.log(rcPercentage );
+
+
+  // Add column headers
+  sheet.columns = [
+    { header: '#', key: 'index', width: 5 },
+    { header: 'Today register and appoinment calls(First visit call)', key: 'callId', width: 30 },
+    { header: 'Engineer asign within 1 hr', key: 'assign', width: 30 },
+    { header: 'Engineer visited (1 hr before & after first apt time)', key: 'pda', width: 30 },
+    { header: 'Rc on appt date', key: 'rc', width: 30 }
+  ];
+
+  // Add data rows
+  myData.forEach((row, index) => {
+    sheet.addRow({
+      index: index + 1,
+      callId: row.callId,
+      assign: row.assign ? 'Yes' : 'No',
+      pda: row.pda ? 'Yes' : 'No',
+      rc: row.rc ? 'Yes' : 'No'
+    });
+  });
+
+  // Save the workbook to a file
+  await workbook.xlsx.writeFile('output.xlsx');
+  console.log('Excel file generated successfully!');
+}
+
+
+async function generateExcel() {
+  const workbook = new Excel.Workbook();
+  const sheet = workbook.addWorksheet('Sheet1');
+
+  var assignTrueCount = 0;
+  var assignFalseCount = 0;
+  var assignPercentage = 0;
+  
+  var pdaTrueCount = 0;
+  var pdaFalseCount = 0;
+  var pdaPercentage = 0;
+  
+  var rcTrueCount = 0;
+  var rcFalseCount = 0;
+  var rcPercentage = 0;
+  
+  assignTrueCount = myData.filter(item => item.assign === true).length;
+  assignFalseCount = myData.filter(item => item.assign === false).length;
+  assignPercentage = ((assignTrueCount / myData.length) * 100).toFixed(2);
+  
+  console.log(assignTrueCount, assignFalseCount); // Count of objects where assign is true
+  console.log(assignPercentage);
+  
+  pdaTrueCount = myData.filter(item => item.pda === true).length;
+  pdaFalseCount = myData.filter(item => item.pda === false).length;
+  pdaPercentage = ((pdaTrueCount / myData.length) * 100).toFixed(2);
+  
+  console.log(pdaTrueCount, pdaFalseCount); // Count of objects where assign is true
+  console.log(pdaPercentage);
+  
+  rcTrueCount = myData.filter(item => item.rc === true).length;
+  rcFalseCount = myData.filter(item => item.rc === false).length;
+  rcPercentage = ((rcTrueCount / myData.length) * 100).toFixed(2);
+  
+  console.log(rcTrueCount, rcFalseCount); // Count of objects where assign is true
+  console.log(rcPercentage);
+
+  // Add column headers
+  sheet.columns = [
+    { header: '#', key: 'index', width: 5 },
+    { header: 'Today register and appointment calls (First visit call)', key: 'callId', width: 40 },
+    { header: 'Engineer assign within 1 hr', key: 'assign', width: 30 },
+    { header: 'Engineer visited (1 hr before & after first apt time)', key: 'pda', width: 50 },
+    { header: 'Rc on apt date', key: 'rc', width: 30 }
+  ];
+
+  // Add data rows
+  myData.forEach((row, index) => {
+    sheet.addRow({
+      index: index + 1,
+      callId: row.callId,
+      assign: row.assign ? 'Yes' : 'No',
+      pda: row.pda ? 'Yes' : 'No',
+      rc: row.rc ? 'Yes' : 'No'
+    });
+  });
+
+  // Add a new row with aggregated data
+  sheet.addRow({
+    index: myData.length + 1,
+    callId: 'Aggregated Data',
+    assign: `True: ${assignTrueCount}, False: ${assignFalseCount}, Percentage: ${assignPercentage}%`,
+    pda: `True: ${pdaTrueCount}, False: ${pdaFalseCount}, Percentage: ${pdaPercentage}%`,
+    rc: `True: ${rcTrueCount}, False: ${rcFalseCount}, Percentage: ${rcPercentage}%`
+  });
+
+  // Merge the first two columns
+  sheet.mergeCells('A1:B1');
+
+  // Save the workbook to a file
+  await workbook.xlsx.writeFile('output.xlsx');
+  console.log('Excel file generated successfully!');
 }

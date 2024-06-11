@@ -30,17 +30,20 @@ const req = await fetch("https://biz2.samsungcsportal.com/gspn/operate.do", {
   });
 
 const res = await req.text();
-console.log(res);
+//console.log(res);
 
-
+const dom = new JSDOM(res);
+const document = dom.window.document;
 
 // Get current date
 var currentDate = new Date();
 var currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so add 1
 
-
 // Get table body
 var tableBody = document.getElementById("educationTableBody");
+
+// Array to store rows matching the current month
+var rowsMatchingCurrentMonth = [];
 
 // Iterate through table rows
 for (var i = 0; i < tableBody.rows.length; i++) {
@@ -52,10 +55,14 @@ for (var i = 0; i < tableBody.rows.length; i++) {
 
     // Check if validToMonth matches currentMonth
     if (validToMonth === currentMonth) {
-        // Row matches current month, do something with it
-        console.log("Row matches current month:", row);
+        // Row matches current month, add it to the array
+        rowsMatchingCurrentMonth.push(row);
     }
 }
+
+// Now you have all rows matching the current month in the array "rowsMatchingCurrentMonth"
+// You can iterate over this array and do whatever you want with these rows
+console.log("Rows matching current month:", rowsMatchingCurrentMonth);
 
 
 }

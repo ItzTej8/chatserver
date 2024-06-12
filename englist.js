@@ -44,11 +44,22 @@ contact: datalist.TEL_NO
 
 }
 engList.push(newData);
+await processGetEngDetail();
+
+
+}
 
 
 
 }
 
+async function processGetEngDetail()
+{
+for (var eng of engList)
+  {
+await getEngInfo(eng.engCode, eng.engName, eng.contact);
+
+  }
 
 
 }

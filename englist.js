@@ -68,7 +68,8 @@ await getEngInfo(eng.engCode, eng.engName, eng.contact);
 
 async function getEngInfo(engCode, engName, contact)
 {
-
+try
+{
 const req = await fetch("https://biz2.samsungcsportal.com/gspn/operate.do", {
   "headers": {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -143,7 +144,10 @@ console.log(allEngDetails);
 
 console.log("Rows matching current month:", currentMonthTrainingExpire )
 
-
+}
+  catch(e){
+console.log(e)
+  }
 }
 
 getEngInfo();
